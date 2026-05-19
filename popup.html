@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Always Show Video Controls</title>
+  <title></title>
   <style>
     * {
       margin: 0;
@@ -152,29 +152,29 @@
   <div class="header">
     <span class="header-icon">▶️</span>
     <div class="header-text">
-      <h1>Always Show Video Controls</h1>
-      <p>Firefox Extension</p>
+      <h1 data-i18n="popupTitle"></h1>
+      <p data-i18n="popupSubtitle"></p>
     </div>
   </div>
 
   <hr class="divider" />
 
   <div class="toggle-row">
-    <span class="toggle-label">Enable on this page</span>
+    <span class="toggle-label" data-i18n="toggleLabel"></span>
     <label class="switch">
       <input type="checkbox" id="toggle" checked />
       <span class="slider"></span>
     </label>
   </div>
 
-  <div class="status on" id="status">✔ Controls are always visible</div>
+  <div class="status on" id="status"></div>
 
   <div class="info">
-    <strong>What this does:</strong><br />
-    Forces native HTML5 <code>&lt;video&gt;</code> controls to stay visible — even on sites that auto-hide them after a few seconds of inactivity.
+    <strong data-i18n="infoTitle"></strong><br />
+    <span data-i18n="infoBody"></span>
   </div>
 
-  <footer>v1.0 · Always Show Video Controls</footer>
+  <footer data-i18n="footerVersion"></footer>
 
   <script src="popup.js"></script>
 </body>

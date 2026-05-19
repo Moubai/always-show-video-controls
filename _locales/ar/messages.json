@@ -1,0 +1,42 @@
+{
+  "extName": {
+    "message": "إظهار عناصر التحكم بالفيديو دائمًا",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "يجبر عناصر تحكم فيديو HTML5 على البقاء مرئية دائمًا، متجاوزًا أي سلوك إخفاء تلقائي.",
+    "description": "Extension description"
+  },
+  "popupTitle": {
+    "message": "إظهار عناصر التحكم بالفيديو دائمًا",
+    "description": "Popup heading"
+  },
+  "popupSubtitle": {
+    "message": "إضافة Firefox",
+    "description": "Popup subtitle"
+  },
+  "toggleLabel": {
+    "message": "تفعيل في هذه الصفحة",
+    "description": "Toggle switch label"
+  },
+  "statusOn": {
+    "message": "✔ عناصر التحكم مرئية دائمًا",
+    "description": "Status when enabled"
+  },
+  "statusOff": {
+    "message": "✖ معطّل — يُطبَّق سلوك الموقع",
+    "description": "Status when disabled"
+  },
+  "infoTitle": {
+    "message": "ما الذي يفعله هذا:",
+    "description": "Info box title"
+  },
+  "infoBody": {
+    "message": "يبقي عناصر التحكم الأصلية لفيديو HTML5 مرئية — حتى على المواقع التي تخفيها بعد ثوانٍ من عدم النشاط.",
+    "description": "Info box body"
+  },
+  "footerVersion": {
+    "message": "v1.0 · إظهار عناصر التحكم بالفيديو دائمًا",
+    "description": "Footer text"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "extName": {
+    "message": "動画コントロールを常に表示",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "HTML5動画のコントロールを常に表示し、自動非表示の動作を無効にします。",
+    "description": "Extension description"
+  },
+  "popupTitle": {
+    "message": "動画コントロールを常に表示",
+    "description": "Popup heading"
+  },
+  "popupSubtitle": {
+    "message": "Firefox 拡張機能",
+    "description": "Popup subtitle"
+  },
+  "toggleLabel": {
+    "message": "このページで有効にする",
+    "description": "Toggle switch label"
+  },
+  "statusOn": {
+    "message": "✔ コントロールは常に表示されています",
+    "description": "Status when enabled"
+  },
+  "statusOff": {
+    "message": "✖ 無効 — サイトのデフォルト動作が適用されます",
+    "description": "Status when disabled"
+  },
+  "infoTitle": {
+    "message": "この拡張機能について：",
+    "description": "Info box title"
+  },
+  "infoBody": {
+    "message": "ネイティブのHTML5動画コントロールを常に表示します — 数秒間操作がないと自動的に非表示にするサイトでも有効です。",
+    "description": "Info box body"
+  },
+  "footerVersion": {
+    "message": "v1.0 · 動画コントロールを常に表示",
+    "description": "Footer text"
+  }
+}

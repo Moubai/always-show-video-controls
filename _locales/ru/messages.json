@@ -1,0 +1,42 @@
+{
+  "extName": {
+    "message": "Всегда показывать элементы управления видео",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Принудительно отображает элементы управления HTML5-видео, отменяя любое автоматическое скрытие.",
+    "description": "Extension description"
+  },
+  "popupTitle": {
+    "message": "Всегда показывать элементы управления видео",
+    "description": "Popup heading"
+  },
+  "popupSubtitle": {
+    "message": "Расширение Firefox",
+    "description": "Popup subtitle"
+  },
+  "toggleLabel": {
+    "message": "Включить на этой странице",
+    "description": "Toggle switch label"
+  },
+  "statusOn": {
+    "message": "✔ Элементы управления всегда видны",
+    "description": "Status when enabled"
+  },
+  "statusOff": {
+    "message": "✖ Отключено — применяется поведение сайта",
+    "description": "Status when disabled"
+  },
+  "infoTitle": {
+    "message": "Что это делает:",
+    "description": "Info box title"
+  },
+  "infoBody": {
+    "message": "Сохраняет нативные элементы управления HTML5-видео видимыми — даже на сайтах, которые скрывают их после нескольких секунд бездействия.",
+    "description": "Info box body"
+  },
+  "footerVersion": {
+    "message": "v1.0 · Всегда показывать элементы управления видео",
+    "description": "Footer text"
+  }
+}

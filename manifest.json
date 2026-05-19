@@ -1,8 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "Always Show Video Controls",
+  "name": "__MSG_extName__",
   "version": "1.0",
-  "description": "Forces HTML5 video controls to always remain visible, overriding any auto-hide behavior.",
+  "description": "__MSG_extDescription__",
+  "default_locale": "en",
   "author": "You",
 
   "icons": {
@@ -14,7 +15,7 @@
     "default_icon": {
       "48": "icons/icon-48.png"
     },
-    "default_title": "Always Show Video Controls",
+    "default_title": "__MSG_extName__",
     "default_popup": "popup.html"
   },
 

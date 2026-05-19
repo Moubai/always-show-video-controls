@@ -1,0 +1,42 @@
+{
+  "extName": {
+    "message": "Always Show Video Controls",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Forces HTML5 video controls to always remain visible, overriding any auto-hide behavior.",
+    "description": "Extension description"
+  },
+  "popupTitle": {
+    "message": "Always Show Video Controls",
+    "description": "Popup heading"
+  },
+  "popupSubtitle": {
+    "message": "Firefox Extension",
+    "description": "Popup subtitle"
+  },
+  "toggleLabel": {
+    "message": "Enable on this page",
+    "description": "Toggle switch label"
+  },
+  "statusOn": {
+    "message": "✔ Controls are always visible",
+    "description": "Status when enabled"
+  },
+  "statusOff": {
+    "message": "✖ Disabled — site controls apply",
+    "description": "Status when disabled"
+  },
+  "infoTitle": {
+    "message": "What this does:",
+    "description": "Info box title"
+  },
+  "infoBody": {
+    "message": "Forces native HTML5 video controls to stay visible — even on sites that auto-hide them after a few seconds of inactivity.",
+    "description": "Info box body"
+  },
+  "footerVersion": {
+    "message": "v1.0 · Always Show Video Controls",
+    "description": "Footer text"
+  }
+}

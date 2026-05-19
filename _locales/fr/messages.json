@@ -1,0 +1,42 @@
+{
+  "extName": {
+    "message": "Toujours afficher les contrôles vidéo",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Force l'affichage permanent des contrôles vidéo HTML5, en ignorant tout masquage automatique.",
+    "description": "Extension description"
+  },
+  "popupTitle": {
+    "message": "Toujours afficher les contrôles vidéo",
+    "description": "Popup heading"
+  },
+  "popupSubtitle": {
+    "message": "Extension Firefox",
+    "description": "Popup subtitle"
+  },
+  "toggleLabel": {
+    "message": "Activer sur cette page",
+    "description": "Toggle switch label"
+  },
+  "statusOn": {
+    "message": "✔ Les contrôles sont toujours visibles",
+    "description": "Status when enabled"
+  },
+  "statusOff": {
+    "message": "✖ Désactivé — comportement du site appliqué",
+    "description": "Status when disabled"
+  },
+  "infoTitle": {
+    "message": "Ce que ça fait :",
+    "description": "Info box title"
+  },
+  "infoBody": {
+    "message": "Force l'affichage permanent des contrôles natifs HTML5 — même sur les sites qui les masquent après quelques secondes d'inactivité.",
+    "description": "Info box body"
+  },
+  "footerVersion": {
+    "message": "v1.0 · Toujours afficher les contrôles vidéo",
+    "description": "Footer text"
+  }
+}
