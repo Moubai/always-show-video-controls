@@ -1,0 +1,42 @@
+{
+  "manifest_version": 2,
+  "name": "Always Show Video Controls",
+  "version": "1.0",
+  "description": "Forces HTML5 video controls to always remain visible, overriding any auto-hide behavior.",
+  "author": "You",
+
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+
+  "browser_action": {
+    "default_icon": {
+      "48": "icons/icon-48.png"
+    },
+    "default_title": "Always Show Video Controls",
+    "default_popup": "popup.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["video-controls.css"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+
+  "applications": {
+    "gecko": {
+      "id": "always-show-video-controls@extension",
+      "strict_min_version": "57.0"
+    }
+  }
+}
