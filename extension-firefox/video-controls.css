@@ -1,0 +1,63 @@
+/*
+ * Always Show Video Controls - Firefox Extension
+ * Forces native HTML5 video controls to remain visible at all times.
+ *
+ * Technique: Override opacity/visibility on shadow DOM pseudo-elements
+ * used by Firefox (Gecko) to render native video controls.
+ * Using !important to override any site-level styles that hide them.
+ */
+
+/* ── Firefox (Gecko) shadow DOM controls ── */
+
+video::-moz-media-controls {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  pointer-events: auto !important;
+  transition: none !important;
+}
+
+video::-moz-media-controls-panel {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  pointer-events: auto !important;
+}
+
+/* Fullscreen mode — Firefox can override styles in fullscreen */
+video:-moz-full-screen::-moz-media-controls {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+}
+
+video:-moz-full-screen::-moz-media-controls-panel {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* ── WebKit/Blink fallback (Chrome-based browsers) ── */
+
+video::-webkit-media-controls {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  pointer-events: auto !important;
+  transition: none !important;
+}
+
+video::-webkit-media-controls-panel {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+}
+
+video::-webkit-media-controls-enclosure {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* ── Ensure the video element itself is never cursor:none ── */
+video {
+  cursor: default !important;
+}

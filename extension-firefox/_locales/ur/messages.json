@@ -1,0 +1,54 @@
+{
+  "extName": {
+    "message": "ویڈیو کنٹرولز ہمیشہ دکھائیں",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "HTML5 ویڈیو کنٹرولز کو ہمیشہ نظر میں رکھتا ہے، کسی بھی خودکار چھپانے کے عمل کو منسوخ کرتا ہے۔",
+    "description": "Extension description"
+  },
+  "popupTitle": {
+    "message": "ویڈیو کنٹرولز ہمیشہ دکھائیں",
+    "description": "Popup heading"
+  },
+  "popupSubtitle": {
+    "message": "Firefox ایکسٹینشن",
+    "description": "Popup subtitle"
+  },
+  "toggleLabel": {
+    "message": "اس صفحے پر فعال کریں",
+    "description": "Toggle switch label"
+  },
+  "statusOn": {
+    "message": "✔ کنٹرولز ہمیشہ نظر آتے ہیں",
+    "description": "Status when enabled"
+  },
+  "statusOff": {
+    "message": "✖ غیر فعال — ویب سائٹ کا طرزِ عمل لاگو ہے",
+    "description": "Status when disabled"
+  },
+  "infoTitle": {
+    "message": "یہ کیا کرتا ہے:",
+    "description": "Info box title"
+  },
+  "infoBody": {
+    "message": "HTML5 ویڈیو کے مقامی کنٹرولز کو نظر میں رکھتا ہے — یہاں تک کہ ان ویب سائٹس پر بھی جو چند سیکنڈ کی غیرفعالیت کے بعد انہیں چھپا دیتی ہیں۔",
+    "description": "Info box body"
+  },
+  "footerVersion": {
+    "message": "v1.0 · ویڈیو کنٹرولز ہمیشہ دکھائیں",
+    "description": "Footer text"
+  },
+  "toggleAutoplayLabel": {
+    "message": "خودکار چلنا بند کریں",
+    "description": "Autoplay toggle label"
+  },
+  "statusAutoplayOn": {
+    "message": "✔ خودکار چلانا بند ہے",
+    "description": "Autoplay status when blocked"
+  },
+  "statusAutoplayOff": {
+    "message": "✖ خودکار چلانا فعال ہے",
+    "description": "Autoplay status when allowed"
+  }
+}

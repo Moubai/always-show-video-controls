@@ -1,0 +1,54 @@
+{
+  "extName": {
+    "message": "始终显示视频控件",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "强制 HTML5 视频控件始终可见，覆盖任何自动隐藏行为。",
+    "description": "Extension description"
+  },
+  "popupTitle": {
+    "message": "始终显示视频控件",
+    "description": "Popup heading"
+  },
+  "popupSubtitle": {
+    "message": "Firefox 扩展",
+    "description": "Popup subtitle"
+  },
+  "toggleLabel": {
+    "message": "在此页面启用",
+    "description": "Toggle switch label"
+  },
+  "statusOn": {
+    "message": "✔ 控件始终可见",
+    "description": "Status when enabled"
+  },
+  "statusOff": {
+    "message": "✖ 已禁用 — 使用网站默认行为",
+    "description": "Status when disabled"
+  },
+  "infoTitle": {
+    "message": "功能说明：",
+    "description": "Info box title"
+  },
+  "infoBody": {
+    "message": "强制原生 HTML5 视频控件保持可见——即使在几秒钟无操作后会自动隐藏控件的网站上也有效。",
+    "description": "Info box body"
+  },
+  "footerVersion": {
+    "message": "v1.0 · 始终显示视频控件",
+    "description": "Footer text"
+  },
+  "toggleAutoplayLabel": {
+    "message": "阻止自动播放",
+    "description": "Autoplay toggle label"
+  },
+  "statusAutoplayOn": {
+    "message": "✔ 自动播放已阻止",
+    "description": "Autoplay status when blocked"
+  },
+  "statusAutoplayOff": {
+    "message": "✖ 自动播放已允许",
+    "description": "Autoplay status when allowed"
+  }
+}

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #1e1e2e;
+      color: #cdd6f4;
+      width: 260px;
+      padding: 16px;
+      user-select: none;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .header-icon {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .header-text h1 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #cba6f7;
+      line-height: 1.2;
+    }
+
+    .header-text p {
+      font-size: 11px;
+      color: #6c7086;
+      margin-top: 2px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #313244;
+      margin: 12px 0;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .toggle-row + .toggle-row {
+      margin-top: 10px;
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #cdd6f4;
+    }
+
+    /* Toggle switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: #45475a;
+      border-radius: 24px;
+      transition: background 0.25s;
+    }
+
+    .slider::before {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      bottom: 3px;
+      background: #cdd6f4;
+      border-radius: 50%;
+      transition: transform 0.25s;
+    }
+
+    input:checked + .slider {
+      background: #cba6f7;
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(20px);
+    }
+
+    .status-group {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .status {
+      font-size: 11px;
+      color: #6c7086;
+      text-align: center;
+      min-height: 16px;
+      transition: color 0.2s;
+    }
+
+    .status.on  { color: #a6e3a1; }
+    .status.off { color: #f38ba8; }
+
+    .info {
+      margin-top: 14px;
+      background: #181825;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 11px;
+      color: #6c7086;
+      line-height: 1.6;
+    }
+
+    .info strong {
+      color: #cba6f7;
+    }
+
+    footer {
+      margin-top: 14px;
+      font-size: 10px;
+      color: #45475a;
+      text-align: center;
+    }
+
+    /* Accessibility */
+    .switch input:focus-visible + .slider {
+      outline: 2px solid #cba6f7;
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .slider,
+      .slider::before {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <span class="header-icon">▶️</span>
+    <div class="header-text">
+      <h1 data-i18n="popupTitle"></h1>
+      <p data-i18n="popupSubtitle"></p>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="toggle-row">
+    <span class="toggle-label" id="label-toggle" data-i18n="toggleLabel"></span>
+    <label class="switch">
+      <input type="checkbox" id="toggle" checked aria-labelledby="label-toggle" />
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="toggle-row">
+    <span class="toggle-label" id="label-autoplay" data-i18n="toggleAutoplayLabel"></span>
+    <label class="switch">
+      <input type="checkbox" id="toggleAutoplay" aria-labelledby="label-autoplay" />
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="status-group">
+    <div class="status on" id="status"></div>
+    <div class="status off" id="statusAutoplay"></div>
+  </div>
+
+  <div class="info">
+    <strong data-i18n="infoTitle"></strong><br />
+    <span data-i18n="infoBody"></span>
+  </div>
+
+  <footer data-i18n="footerVersion"></footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

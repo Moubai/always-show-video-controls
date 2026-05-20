@@ -1,0 +1,54 @@
+{
+  "extName": {
+    "message": "Mostrar siempre los controles de vídeo",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Fuerza que los controles de vídeo HTML5 permanezcan siempre visibles, anulando cualquier ocultación automática.",
+    "description": "Extension description"
+  },
+  "popupTitle": {
+    "message": "Mostrar siempre los controles de vídeo",
+    "description": "Popup heading"
+  },
+  "popupSubtitle": {
+    "message": "Extensión de Firefox",
+    "description": "Popup subtitle"
+  },
+  "toggleLabel": {
+    "message": "Activar en esta página",
+    "description": "Toggle switch label"
+  },
+  "statusOn": {
+    "message": "✔ Los controles siempre son visibles",
+    "description": "Status when enabled"
+  },
+  "statusOff": {
+    "message": "✖ Desactivado — se aplica el comportamiento del sitio",
+    "description": "Status when disabled"
+  },
+  "infoTitle": {
+    "message": "Qué hace esto:",
+    "description": "Info box title"
+  },
+  "infoBody": {
+    "message": "Mantiene visibles los controles nativos de vídeo HTML5 — incluso en sitios que los ocultan tras unos segundos de inactividad.",
+    "description": "Info box body"
+  },
+  "footerVersion": {
+    "message": "v1.0 · Mostrar siempre los controles de vídeo",
+    "description": "Footer text"
+  },
+  "toggleAutoplayLabel": {
+    "message": "Bloquear la reproducción automática",
+    "description": "Autoplay toggle label"
+  },
+  "statusAutoplayOn": {
+    "message": "✔ Reproducción automática bloqueada",
+    "description": "Autoplay status when blocked"
+  },
+  "statusAutoplayOff": {
+    "message": "✖ Reproducción automática permitida",
+    "description": "Autoplay status when allowed"
+  }
+}
