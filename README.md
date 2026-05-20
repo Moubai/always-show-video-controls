@@ -1,4 +1,5 @@
 # Always Show Video Controls
+this extension has been entirely vibe coded with Free claude.ai opus 4.6
 
 A browser extension that keeps native HTML5 video controls permanently visible and blocks autoplay — on any website, without any configuration.
 
