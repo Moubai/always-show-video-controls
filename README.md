@@ -78,9 +78,17 @@ always-show-video-controls/
 │   ├── video-controls.css
 │   ├── icons/
 │   └── _locales/               # 11 languages
-│       ├── en/  fr/  ar/  es/
-│       ├── pt_BR/  ru/  zh_CN/
-│       ├── ja/  hi/  bn/  ur/
+│       ├── en/
+|       ├── fr/
+|       ├── ar/
+|       ├── es/
+│       ├── pt_BR/
+|       ├── ru/
+|       ├── zh_CN/
+│       ├── ja/
+|       ├── hi/
+|       ├── bn/
+|       ├── ur/
 ├── extension-chromium/         # Chromium package (MV3, host_permissions)
 │   └── ...                     # Same files, different manifest.json
 └── docs/
