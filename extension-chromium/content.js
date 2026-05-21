@@ -8,103 +8,135 @@
  * Feature 2 — Block autoplay:
  *   Targets only videos that would play automatically (have the `autoplay`
  *   attribute or call play() before any user gesture). Once the user explicitly
- *   starts a video, that video is permanently released and never paused again.
+ *   starts a video, that video is permanently released and never interfered
+ *   with again.
  *
  *   Strategy:
  *     a) Remove the `autoplay` attribute from every video before it can act.
  *     b) Intercept HTMLMediaElement.prototype.play and use
  *        navigator.userActivation.isActive (Gecko 72+) to tell apart an
- *        autoplay call from a genuine user-gesture call. If the call comes from
- *        a user gesture the video is added to `userReleasedVideos` and is never
- *        blocked again.
+ *        autoplay call from a genuine user-gesture call.
  *     c) MutationObserver handles videos injected dynamically.
- *     d) The `autoplay` attribute is watched per-element so sites cannot put it
- *        back after we remove it.
+ *     d) The `autoplay` attribute is watched per-element so sites cannot put
+ *        it back after we remove it.
+ *
+ * Security fixes applied (red team audit 2026-05-21):
+ *   - CRIT-1: prototype.play patched synchronously with Object.defineProperty
+ *             (configurable: false) to prevent renegotiation by page scripts.
+ *   - CRIT-2: blocked play() now mimics native NotAllowedError instead of
+ *             resolving silently, eliminating extension fingerprinting via
+ *             promise-resolution behaviour.
+ *   - MED-1:  interceptor installed synchronously at injection time (before
+ *             storage read) to close the bootstrap race window.
+ *   - MED-2:  setInterval ID stored; interval cleared when both features are
+ *             off; interval skipped when no <video> exists on the page.
+ *   - MED-3:  muted attribute only removed during initial blocking phase;
+ *             once video is in userReleasedVideos, muted is never touched.
+ *   - LOW-1:  _asvcControlsObserver property replaced by a WeakSet to avoid
+ *             exposing an enumerable extension marker on DOM elements.
+ *   - LOW-2:  explicit CSP added to manifest.json.
+ *   - INFO-2: onMessage sender validated against runtime.id.
  */
 
 (function () {
   'use strict';
 
-  // ── Browser API shim (Firefox: `browser`, Chromium: `chrome`) ──────────
   const api = (typeof browser !== 'undefined') ? browser : chrome;
 
-  // ── State ─────────────────────────────────────────────────────────────────
+  // ── State ──────────────────────────────────────────────────────────────────
 
+  // FIX MED-1: defaults match storage defaults so the interceptor is safe to
+  // install synchronously before we read the actual stored values.
   let enabled       = true;
   let blockAutoplay = false;
 
-  // Original play() — called for legitimate playback.
   const nativePlay = HTMLMediaElement.prototype.play;
 
-  // Videos the user has explicitly started: never pause these again.
+  // Videos the user has explicitly started — never interfere again.
   const userReleasedVideos = new WeakSet();
 
-  // Videos we are already observing for autoplay attribute changes.
+  // Videos already observed for autoplay attribute changes.
   const autoplayObserved = new WeakSet();
 
-  // ── Autoplay interception (prototype patch) ───────────────────────────────
+  // FIX LOW-1: replaces video._asvcControlsObserver property on DOM elements.
+  const controlsObserved = new WeakSet();
 
+  // FIX MED-2: stored so we can clearInterval when both features are off.
+  let sweepIntervalId = null;
+
+  // ── Autoplay interception ──────────────────────────────────────────────────
+
+  // FIX MED-1 + CRIT-1: install synchronously with Object.defineProperty so
+  // page scripts that run after document_start cannot overwrite the descriptor.
   function installPlayInterceptor() {
-    HTMLMediaElement.prototype.play = function () {
-      if (!blockAutoplay || userReleasedVideos.has(this)) {
-        // Feature off or user already played this video — always allow.
-        return nativePlay.apply(this, arguments);
+    Object.defineProperty(HTMLMediaElement.prototype, 'play', {
+      configurable: false,
+      enumerable:   false,
+      writable:     false,
+      value: function play() {
+        if (!blockAutoplay || userReleasedVideos.has(this)) {
+          return nativePlay.apply(this, arguments);
+        }
+
+        const isUserGesture = navigator.userActivation
+          ? navigator.userActivation.isActive
+          : false;
+
+        if (isUserGesture) {
+          userReleasedVideos.add(this);
+          return nativePlay.apply(this, arguments);
+        }
+
+        // FIX CRIT-2: return a rejection that matches native NotAllowedError
+        // so sites cannot fingerprint the extension via promise resolution.
+        return Promise.reject(
+          new DOMException('play() request was interrupted', 'NotAllowedError')
+        );
       }
-
-      // navigator.userActivation.isActive is true only within the same task as
-      // a real user gesture (click, key, touch). This is the most reliable
-      // signal in Firefox (Gecko 72+).
-      const isUserGesture = navigator.userActivation
-        ? navigator.userActivation.isActive
-        : false;
-
-      if (isUserGesture) {
-        // User explicitly pressed play — release this video permanently.
-        userReleasedVideos.add(this);
-        return nativePlay.apply(this, arguments);
-      }
-
-      // Autoplay call without a user gesture — suppress.
-      // Return a resolved Promise so .play().catch() callers don't throw.
-      return Promise.resolve();
-    };
+    });
   }
 
   function uninstallPlayInterceptor() {
-    HTMLMediaElement.prototype.play = nativePlay;
+    // configurable: false means we cannot reassign the descriptor after the
+    // first install. Uninstall is therefore a no-op on the prototype; the
+    // blockAutoplay flag gates all blocking logic so disabling the feature
+    // through the popup still works correctly without touching the prototype.
+    // A page reload restores the native prototype cleanly.
   }
 
-  // ── Per-video autoplay handling ───────────────────────────────────────────
+  // FIX MED-1: install immediately (synchronous, before storage read) so there
+  // is no window between document_start injection and the storage promise.
+  // blockAutoplay is false by default so no calls are blocked until the stored
+  // preference is loaded and flips the flag.
+  installPlayInterceptor();
+
+  // ── Per-video autoplay handling ────────────────────────────────────────────
 
   function blockVideoAutoplay(video) {
     if (!blockAutoplay) return;
-
-    // Skip videos the user has already explicitly started.
     if (userReleasedVideos.has(video)) return;
 
-    // Remove the autoplay attribute so the browser itself does not start playback.
     if (video.hasAttribute('autoplay')) {
       video.removeAttribute('autoplay');
     }
 
-    // Remove muted — sites set it to satisfy the browser's autoplay policy
-    // (muted autoplay is allowed by Firefox by default). We want the user to
-    // hear sound when they choose to play.
-    if (video.hasAttribute('muted')) {
-      video.removeAttribute('muted');
+    // FIX MED-3: only strip muted during the initial blocking phase (before
+    // any user interaction with this video). Once released, muted is the
+    // user's own choice and must not be touched.
+    if (!userReleasedVideos.has(video)) {
+      if (video.hasAttribute('muted')) {
+        video.removeAttribute('muted');
+      }
+      video.muted = false;
     }
-    video.muted = false;
 
-    // Pause immediately if already playing (race with HTML parser).
     if (!video.paused) {
       video.pause();
     }
 
-    // Watch for the site adding `autoplay` or `muted` back.
     if (!autoplayObserved.has(video)) {
       autoplayObserved.add(video);
 
-      // Release the video when the user starts it via the native controls.
       video.addEventListener('play', () => {
         if (navigator.userActivation && navigator.userActivation.isActive) {
           userReleasedVideos.add(video);
@@ -112,12 +144,15 @@
       }, { capture: true });
 
       const attrObs = new MutationObserver((mutations) => {
+        // FIX MED-3: once released, stop observing muted changes.
         if (!blockAutoplay || userReleasedVideos.has(video)) return;
         for (const m of mutations) {
           if (m.attributeName === 'autoplay' && video.hasAttribute('autoplay')) {
             video.removeAttribute('autoplay');
           }
-          if (m.attributeName === 'muted' && video.hasAttribute('muted')) {
+          // Only fight muted back while the video has not been user-released.
+          if (m.attributeName === 'muted' && video.hasAttribute('muted')
+              && !userReleasedVideos.has(video)) {
             video.removeAttribute('muted');
             video.muted = false;
           }
@@ -127,7 +162,7 @@
     }
   }
 
-  // ── Feature 1 helpers (controls) ─────────────────────────────────────────
+  // ── Feature 1 helpers (controls) ──────────────────────────────────────────
 
   function fixVideo(video) {
     if (!enabled) return;
@@ -146,8 +181,10 @@
       }
     }
 
-    // Per-element controls observer — guard against double-attach.
-    if (!video._asvcControlsObserver) {
+    // FIX LOW-1: use WeakSet instead of a property on the DOM element to
+    // avoid exposing an enumerable extension marker that sites could detect.
+    if (!controlsObserved.has(video)) {
+      controlsObserved.add(video);
       const ctrlObs = new MutationObserver((mutations) => {
         if (!enabled) return;
         for (const m of mutations) {
@@ -157,11 +194,10 @@
         }
       });
       ctrlObs.observe(video, { attributes: true, attributeFilter: ['controls'] });
-      video._asvcControlsObserver = ctrlObs;
     }
   }
 
-  // ── Apply both features to a single video ────────────────────────────────
+  // ── Apply both features to a single video ─────────────────────────────────
 
   function processVideo(video) {
     if (enabled)       fixVideo(video);
@@ -172,7 +208,27 @@
     document.querySelectorAll('video').forEach(processVideo);
   }
 
-  // ── Shared DOM observer (started at most once) ────────────────────────────
+  // ── Interval helpers ───────────────────────────────────────────────────────
+
+  // FIX MED-2: start sweep only when at least one feature is active; store the
+  // ID so we can cancel when both features are turned off.
+  function startSweepInterval() {
+    if (sweepIntervalId !== null) return;
+    sweepIntervalId = setInterval(() => {
+      if (!enabled && !blockAutoplay) return;
+      // Skip the DOM query entirely when the page has no videos.
+      if (!document.querySelector('video')) return;
+      processAllVideos();
+    }, 2000);
+  }
+
+  function stopSweepInterval() {
+    if (sweepIntervalId === null) return;
+    clearInterval(sweepIntervalId);
+    sweepIntervalId = null;
+  }
+
+  // ── Shared DOM observer ────────────────────────────────────────────────────
 
   let domObserverStarted = false;
 
@@ -194,49 +250,48 @@
     document.addEventListener('DOMContentLoaded', processAllVideos);
     window.addEventListener('load', processAllVideos);
 
-    // Periodic sweep for SPAs that swap video elements after navigation.
-    // processVideo → blockVideoAutoplay already skips userReleasedVideos, so
-    // this will never pause a video the user has explicitly started.
-    setInterval(() => {
-      if (enabled || blockAutoplay) processAllVideos();
-    }, 2000);
+    startSweepInterval();
   }
 
-  // ── Storage bootstrap ─────────────────────────────────────────────────────
+  // ── Storage bootstrap ──────────────────────────────────────────────────────
 
   api.storage.local.get(['enabled', 'blockAutoplay']).then(result => {
-    enabled       = result.enabled      !== false; // default true
-    blockAutoplay = result.blockAutoplay === true;  // default false
+    enabled       = result.enabled      !== false;
+    blockAutoplay = result.blockAutoplay === true;
 
-    if (blockAutoplay) installPlayInterceptor();
+    // The interceptor is already installed; blockAutoplay flag is now updated.
     if (enabled || blockAutoplay) {
       processAllVideos();
       startDomObserver();
     }
   });
 
-  // ── Messages from popup ───────────────────────────────────────────────────
+  // ── Messages from popup ────────────────────────────────────────────────────
 
-  api.runtime.onMessage.addListener((message) => {
+  api.runtime.onMessage.addListener((message, sender) => {
+    // FIX INFO-2: validate that the message originates from this extension.
+    if (sender.id !== api.runtime.id) return;
+
     if (message.type === 'toggle') {
       enabled = message.enabled;
       if (enabled) {
         processAllVideos();
         startDomObserver();
       }
+      // FIX MED-2: stop the sweep only when both features are off.
+      if (!enabled && !blockAutoplay) stopSweepInterval();
     }
 
     if (message.type === 'toggleAutoplay') {
       blockAutoplay = message.enabled;
       if (blockAutoplay) {
-        installPlayInterceptor();
+        // Interceptor already installed; just flip the flag and process.
         processAllVideos();
         startDomObserver();
       } else {
         uninstallPlayInterceptor();
-        // Note: removed `autoplay` attributes are not restored — a page reload
-        // is the clean reset, consistent with the controls toggle behavior.
       }
+      if (!enabled && !blockAutoplay) stopSweepInterval();
     }
   });
 
