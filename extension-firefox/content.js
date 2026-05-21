@@ -47,7 +47,7 @@
 
   // FIX MED-1: defaults match storage defaults so the interceptor is safe to
   // install synchronously before we read the actual stored values.
-  let enabled       = true;
+  let enabled       = false; // default false avoids bootstrap flash (passe-2 fix)
   let blockAutoplay = false;
 
   const nativePlay = HTMLMediaElement.prototype.play;
