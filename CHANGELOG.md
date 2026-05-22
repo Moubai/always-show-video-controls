@@ -6,6 +6,24 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.1.1] — 2026-05-22
+
+### Fixed
+
+- **LOW-P3a** — `footerVersion` string bumped to `v1.1.0` in all 11 locale
+  files (`_locales/*/messages.json`). The manifest version and the displayed
+  footer version are now in sync.
+
+- **LOW-P3b** — `popup.html` no longer carries a hardcoded `checked` attribute
+  on `#toggle`. The body gains class `toggles-hidden` on load; `popup.js`
+  removes it after `storage.local.get` resolves, making JS the single source
+  of truth for toggle state and eliminating the 50-200 ms flash of wrong state.
+
+- **INFO-P3** — Replaced `nativePlay.apply(this, arguments)` with
+  `Reflect.apply(nativePlay, this, arguments)` in the play interceptor.
+  `Reflect.apply` cannot be shadowed by a property on the function object
+  itself, making the interceptor more resilient to prototype pollution.
+
 ## [1.1.0] — 2026-05-21
 
 ### Security (red team audit — passe 1 + passe 2)
@@ -70,3 +88,4 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 - Optional toggle to block autoplay (including muted autoplay).
 - Supports Firefox (MV3, Gecko), Chrome, Edge, Brave, Opera.
 - 11 UI languages including RTL support (Arabic, Urdu).
+

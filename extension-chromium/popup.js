@@ -55,6 +55,8 @@ api.storage.local.get(['enabled', 'blockAutoplay']).then(result => {
   toggleAutoplay.checked = ba;
   updateStatus(en);
   updateStatusAutoplay(ba);
+  // Reveal toggles only after state is known — prevents flash of wrong checked state.
+  document.body.classList.remove('toggles-hidden');
 });
 
 // ── Send message to the active tab, log failures instead of swallowing them ──

@@ -75,7 +75,7 @@
       writable:     false,
       value: function play() {
         if (!blockAutoplay || userReleasedVideos.has(this)) {
-          return nativePlay.apply(this, arguments);
+          return Reflect.apply(nativePlay, this, arguments);
         }
 
         const isUserGesture = navigator.userActivation
@@ -84,7 +84,7 @@
 
         if (isUserGesture) {
           userReleasedVideos.add(this);
-          return nativePlay.apply(this, arguments);
+          return Reflect.apply(nativePlay, this, arguments);
         }
 
         // FIX CRIT-2: return a rejection that matches native NotAllowedError
