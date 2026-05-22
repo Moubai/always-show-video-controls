@@ -39,10 +39,11 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "always-show-video-controls@extension",
-      "strict_min_version": "109.0",
+      "strict_min_version": "140.0",
       "data_collection_permissions": {
-        "usedDataCategories": [],
-        "usedDataCategoryPurposes": {}
+        "required": [
+          "none"
+        ]
       }
     }
   },
