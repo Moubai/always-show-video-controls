@@ -24,6 +24,17 @@ Versioning follows [Semantic Versioning](https://semver.org/).
   `Reflect.apply` cannot be shadowed by a property on the function object
   itself, making the interceptor more resilient to prototype pollution.
 
+- **BUG-P3** — Fixed toggles remaining permanently hidden on Firefox. The
+  `storage.local.get` promise chain was missing a `.catch()` handler. On
+  Firefox the `browser` API returns a native ES6 Promise — any unhandled
+  rejection (storage unavailable, quota exceeded, popup closed early) silently
+  aborted the chain before `classList.remove('toggles-hidden')` could run,
+  leaving both switches invisible. Chromium's `chrome.storage` callback
+  internals masked the same issue. Fixed by restructuring the chain into
+  `.then().catch().finally()`: `.catch()` applies safe defaults and logs the
+  error via `console.debug`; `.finally()` removes `toggles-hidden`
+  unconditionally regardless of outcome.  
+
 ## [1.1.0] — 2026-05-21
 
 ### Security (red team audit — passe 1 + passe 2)
