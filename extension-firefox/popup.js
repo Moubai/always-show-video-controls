@@ -55,6 +55,16 @@ api.storage.local.get(['enabled', 'blockAutoplay']).then(result => {
   toggleAutoplay.checked = ba;
   updateStatus(en);
   updateStatusAutoplay(ba);
+}).catch(err => {
+  // Storage read failed — apply safe defaults so the UI is never stuck hidden.
+  console.debug('[asvc] storage.get failed:', err?.message ?? err);
+  toggle.checked         = true;
+  toggleAutoplay.checked = false;
+  updateStatus(true);
+  updateStatusAutoplay(false);
+}).finally(() => {
+  // Always reveal toggles — whether storage succeeded or failed.
+  document.body.classList.remove('toggles-hidden');
 });
 
 // ── Send message to the active tab, log failures instead of swallowing them ──
