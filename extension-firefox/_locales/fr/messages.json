@@ -36,7 +36,7 @@
     "description": "Info box body"
   },
   "footerVersion": {
-    "message": "v1.0 · Toujours afficher les contrôles vidéo",
+    "message": "v1.1.1 · Toujours afficher les contrôles vidéo",
     "description": "Footer text"
   },
   "toggleAutoplayLabel": {
