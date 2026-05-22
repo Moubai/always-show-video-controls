@@ -34,11 +34,11 @@ Both features are independent toggles. Changes take effect immediately on the cu
 
 | Browser | Install |
 |---|---|
-| Firefox | [Firefox Add-ons (AMO)](https://addons.mozilla.org/firefox/addon/always-show-video-controls/) |
-| Chrome | [Chrome Web Store](https://chromewebstore.google.com) |
-| Edge | [Edge Add-ons](https://microsoftedge.microsoft.com/addons/) |
-| Brave | Install from the Chrome Web Store |
-| Opera | [Opera Add-ons](https://addons.opera.com) |
+| Firefox | [Firefox Add-ons (AMO)]() link will be publish if accepted.|
+| Chrome | Take the release or clone this repo, i refuse to pay fee to publish extension  (i don't like chromium browser)|
+| Edge | same |
+| Brave | same |
+| Opera | not tested, probably same thing |
 
 ---
 
